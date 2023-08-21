@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <!-- Access rights for Trip User -->
+        <record id="access_trip_user" model="ir.rule">
+            <field name="name">Access Trip User</field>
+            <field name="model_id" ref="model_trip_request"/>
+            <field name="groups" eval="[(4, ref('trip_request.group_trip_user'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        </record>
+
+        <!-- Access rights for Trip Manager -->
+        <record id="access_trip_manager" model="ir.rule">
+            <field name="name">Access Trip Manager</field>
+            <field name="model_id" ref="model_trip_request"/>
+            <field name="groups" eval="[(4, ref('trip_request.group_trip_manager'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+    </data>
+</odoo>

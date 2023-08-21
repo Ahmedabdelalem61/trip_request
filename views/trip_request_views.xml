@@ -1,0 +1,57 @@
+<odoo>
+    <data>
+        <!-- Trip Request Form View -->
+        <record id="view_trip_request_form" model="ir.ui.view">
+            <field name="name">trip.request.form</field>
+            <field name="model">trip.request</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="employee_id"/>
+                                <field name="destination_id"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="num_rest_days"/>
+                                <field name="state"/>
+                            </group>
+                            <group>
+                                <field name="trip_days"/>
+                                <field name="last_change_user"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Trip Request Tree View -->
+        <record id="view_trip_request_tree" model="ir.ui.view">
+            <field name="name">trip.request.tree</field>
+            <field name="model">trip.request</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="employee_id"/>
+                    <field name="destination_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+        <!-- Trip Request Action -->
+        <record id="action_trip_request" model="ir.actions.act_window">
+            <field name="name">Trip Request</field>
+            <field name="res_model">trip.request</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_trip_request_tree"/>
+        </record>
+
+        <!-- Trip Request Menu item -->
+        <menuitem id="menu_trip_request" name="Trip Request" action="action_trip_request"/>
+    </data>
+</odoo>

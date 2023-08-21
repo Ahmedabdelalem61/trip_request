@@ -1,0 +1,25 @@
+<odoo>
+        <template id="report_trip_request">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                        <h2>Trip Request Report</h2>
+                        <p>Trip Employee: <span t-field="doc.employee_id.name"/></p>
+                        <p>Destination: <span t-field="doc.destination_id.name"/></p>
+                        <p>Start Date: <span t-field="doc.start_date"/></p>
+                        <p>End Date: <span t-field="doc.end_date"/></p>
+                    </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <report
+            id="action_report_trip_request"
+            model="trip.request"
+            string="Trip Request Report"
+            report_type="qweb-pdf"
+            name="trip_request.report_trip_request"
+        />
+</odoo>

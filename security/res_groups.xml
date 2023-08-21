@@ -1,0 +1,21 @@
+<odoo>
+    <!--    category-->
+
+    <record id="trip_category" model="ir.module.category">
+        <field name="name">Trip Request Category</field>
+    </record>
+
+    <!--    groups-->
+     <record id="trip_request.group_trip_user" model="res.groups">
+            <field name="name">Trip User</field>
+            <field name="category_id" ref="trip_request.trip_category"/>
+        </record>
+
+    <!-- Trip Manager Group -->
+    <record id="trip_request.group_trip_manager" model="res.groups">
+            <field name="name">Trip Manager</field>
+            <field name="category_id" ref="trip_request.trip_category"/>
+            <field name="implied_ids" eval="[(4, ref('trip_request.group_trip_user'))]"/>
+    </record>
+
+</odoo>
