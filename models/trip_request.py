@@ -6,10 +6,10 @@ class TripRequest(models.Model):
     _name = 'trip.request'
     _description = 'Trip Request'
 
+
     employee_id = fields.Many2one('hr.employee', string='Trip Employee', required=True,
                                   domain="[('contract_id.state', '=', 'open')]")
     destination_id = fields.Many2one('res.country', string='Destination', required=True)
-
     start_date = fields.Date(string='Start Date', required=True)
     end_date = fields.Date(string='End Date')
     num_rest_days = fields.Integer(string='Number of Rest Days')
@@ -22,18 +22,22 @@ class TripRequest(models.Model):
 
     last_change_user = fields.Many2one('res.users', string='Last Change User')
     trip_days = fields.Integer(compute='_compute_trip_days', string='Trip Days', store=True)
+    allowed_destination_ids = fields.Many2many(related='employee_id.allowed_destination_ids', string='Allowed '
+                                                                                                     'Destinations')
 
-    @api.onchange('employee_id')
-    def _onchange_employee_id(self):
-        if self.employee_id:
-            allowed_destinations = self.employee_id.allowed_destination_ids.ids
-            return {'domain': {'destination_id': [('id', 'in', allowed_destinations)]}}
+    # @api.onchange('employee_id')
+    # def _onchange_employee_id(self):
+    #     self.search([]).write({'state': 'draft'})
+    #     if self.employee_id:
+    #         allowed_destinations = self.employee_id.allowed_destination_ids.ids
+    #         return {'domain': {'destination_id': [('id', 'in', allowed_destinations)]}}
+    #
 
     @api.depends('start_date', 'end_date')
     def _compute_trip_days(self):
         for request in self:
-            if request.start_date and request.end_date:
-                trip_days = (request.end_date - request.start_date).days + 1
+            if request.start_date and request.end_date and request.num_rest_days:
+                trip_days = (request.end_date - request.start_date).days + 1 - request.num_rest_days
                 request.trip_days = max(0, trip_days)
             else:
                 request.trip_days = 0
@@ -52,6 +56,10 @@ class TripRequest(models.Model):
             if request.num_rest_days < 0:
                 raise ValidationError("Number of rest days should be greater than zero.")
 
+    def write(self, vals):
+        if 'state' in vals:
+            vals['last_change_user'] = self.env.user.id
+        return super(TripRequest, self).write(vals)
 
 
 class Employee(models.Model):

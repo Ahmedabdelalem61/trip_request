@@ -6,15 +6,20 @@
             <field name="model">trip.request</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <field name="state" widget="statusbar" options="{'clickable': 1}"/>
+                    </header>
                     <sheet>
                         <group>
                             <group>
                                 <field name="employee_id"/>
-                                <field name="destination_id"/>
+                                <field name="allowed_destination_ids" invisible="1"/>
+                                <field name="destination_id" domain="[('id','in',allowed_destination_ids)]"/>
+
                                 <field name="start_date"/>
                                 <field name="end_date"/>
                                 <field name="num_rest_days"/>
-                                <field name="state"/>
+<!--                                <field name="state"/>-->
                             </group>
                             <group>
                                 <field name="trip_days"/>
